@@ -38,3 +38,10 @@ This repository also contains a ton of excellent documentation.
   * A demonstration of how to use a HAL config to control a digital output
 * [EL7041 Stepper Motor Example](el7041_stepper_motor_example.md)
   * A demonstration of how to configure the titular software `linuxcnc` to control a stepper motor
+
+
+# Credits / Thanks
+* Rodw
+* Hakan
+* `linuxcnc-ethercat` devs
+* [exgif.com](https://ezgif.com/) for making converting `.mp4`s into gifs easy
