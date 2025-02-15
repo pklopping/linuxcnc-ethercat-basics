@@ -298,6 +298,14 @@ Note: Using POSIX realtime
 halcmd: 
 ```
 
+If blinking on and off once a second isn't your cup of tea, you can now start playing with `siggen` parameters to make it blink faster (or slower) using `siggen.0.frequency`, a parameter that sets the frequency of the signal generator in Hz. 
+
+```hal
+halrun: setp siggen.0.frequency 2
+```
+
+And your LED should blink twice as fast now.
+
 # END
 
 That's it, that's all I've got for this demo.
