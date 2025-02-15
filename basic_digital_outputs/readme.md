@@ -31,7 +31,9 @@ This doc from the [`linuxcnc-ethercat` repo](https://github.com/linuxcnc-etherca
 ### [Ethercat + linuxcnc + Raspberry pi?](https://www.youtube.com/watch?v=NQ-HnrusGJo)
 While stumbling around trying to learn how to set up EtherCAT with LinuxCNC I came across a [reply](https://forum.linuxcnc.org/ethercat/43459-ethercat-newbie-guidelines#230641) by user [Hakan](https://forum.linuxcnc.org/cb-profile/22448-hakan). In this video he goes through the process of setting up LinuxCNC on a Raspberry Pi as well as installing `linuxcnc-ethercat`. This video is really what unlocked digital IO for me.
 
-[![forum-screenshot-of-video](img/Hakan-video.png)](https://forum.linuxcnc.org/ethercat/43459-ethercat-newbie-guidelines#230641)
+<a href="https://forum.linuxcnc.org/ethercat/43459-ethercat-newbie-guidelines#230641">
+  <img alt="forum-screenshot-of-video" src="./img/Hakan-video.png" width=512 />
+</a>
 
 ## LinuxCNC Ethercat Setup
 Hopefully this is pretty boring and straightforward. 
@@ -57,7 +59,7 @@ If you'll excuse my overkill power situation and lazy wiring, let's start with a
     * The EK1100 copules an ethernet connection with the EtherCAT devices
 1. [EL2008 | EtherCAT Terminal, 8-channel digital output, 24 V DC, 0.5 A](https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/el2xxx-digital-output/el2008.html)
 
-![basic-el2008-setup](img/EL2008-Setup.jpg)
+<img src="./img/EL2008-Setup.jpg" alt="basic ek1100 and el2008 setup" width=512 />
 
 ### Checking The Setup
 
@@ -231,7 +233,7 @@ paul@Precix:~/basics$ ethercat slaves
 
 We can also prove it by sending a command to control the output. Right now all of the LEDs on the EL2008 should be off
 
-![el2008 with no LEDs lit](./img/EL2008-Off.jpg)
+<img src="./img/EL2008-Off.jpg" alt="el2008 with no LEDs lit" width=255 />
 
 Let's send a command to output 24V on channel 0, as indicated by the top left LED
 
@@ -242,7 +244,7 @@ halrun:
 
 Behold!
 
-![el2008 with one LED lit](./img/EL2008-On.jpg)
+<img src="./img/EL2008-On.jpg" alt="el2008 with the channel 0 LED lit" width=255 />
 
 This is great and all, but I promised a blinking LED.
 
