@@ -5,13 +5,13 @@ Alright, so you've read a little bit about how HAL works, but you're trying to f
 ## Overview
 * [Required Reading](#required-reading)
 * [LinuxCNC Ethercat Setup](#linuxcnc-ethercat-setup)
-* [Basic Digital Outputs](#basic-digital-outputs2)
+* [Basic Digital Outputs](#basic-digital-outputs)
 
 ## Goal
 
 Construct a basic "hello world" blinking light with a Beckhoff EL2008 and LinuxCNC.
 
-# TODO: Include gif of the blinking LED
+![el2008 with blinking LED](./img/EL2008-Blinkage.gif)
 
 ## Required Reading
 
