@@ -198,7 +198,8 @@ This loads the `linuxcnc-ethercat` realtime compoment and all the black magic th
 We have a couple more steps we need to take before we can make any LEDs turn on. The first is creating a HAL [thread](https://linuxcnc.org/docs/2.4/html/man/man9/threads.9.html) that will trigger `lcec` to read from and write to the hardware. In this example we'll use a single thread, but most projects will be more selective about threading.
 
 ```hal
-loadrt threads name1=lcec-thread period1=1000000
+halcmd: loadrt threads name1=lcec-thread period1=1000000
+halcmd:
 ```
 
 Notice two things here:
@@ -208,15 +209,66 @@ Notice two things here:
 Now that we have a thread we can use it to trigger the functions `lcec.read-all` and `lcec.write-all` every millisecond
 
 ```hal
-addf lcec.read-all lcec-thread
-addf lcec.write-all lcec-thread
+halcmd: addf lcec.read-all lcec-thread
+halcmd: addf lcec.write-all lcec-thread
+halcmd:
 ```
+
+One final step is required to get everything running, we need to tell it to start
 
 ```hal
-setp lcec.0.1.dout-0 1
+halcmd: start
+halcmd:
 ```
 
-# TODO CONTINUE HERE
+Tada! We now have `linuxcnc-ethercat` running! We can prove it by running `ethercat slaves` in another window and seeing that our EK1100 and EL2008 modules are in `OP` mode instead of `PREOP`
+
+```bash
+paul@Precix:~/basics$ ethercat slaves
+0  0:0  OP  +  EK1100 EtherCAT Coupler (2A E-Bus)
+1  0:1  OP  +  EL2008 8K. Dig. Ausgang 24V, 0.5A
+```
+
+We can also prove it by sending a command to control the output. Right now all of the LEDs on the EL2008 should be off
+
+![el2008 with no LEDs lit](./img/EL2008-Off.jpg)
+
+Let's send a command to output 24V on channel 0, as indicated by the top left LED
+
+```hal
+halrun: setp lcec.0.1.dout-0 1
+halrun:
+```
+
+Behold!
+
+![el2008 with one LED lit](./img/EL2008-On.jpg)
+
+This is great and all, but I promised a blinking LED.
+
+Next let's use what we learned in the [Hal Tutorial](https://linuxcnc.org/docs/stable/html/hal/tutorial.html) and hook up the LED to the clock of a `siggen` function.
+
+Let's start by loading `siggen` and attaching it to the thread
+
+```hal
+halrun: loadrt siggen
+halrun: addf siggen.0.update lcec-thread
+halrun:
+```
+
+And then _finally_ we can create a net that will connect the `siggen` and `lcec`
+
+```hal
+halrun: net channel-0-led => lcec.0.1.dout-0
+halrun: net channel-0-led <= siggen.0.clock
+halrun:
+```
+
+Behold again!
+
+![el2008 with blinking LED](./img/EL2008-Blinkage.gif)
+
+We can glue it all together into a single file:
 
 `el2008.hal`
 ```hal
@@ -238,4 +290,14 @@ net channel-1-led <= siggen.0.clock
 start
 ```
 
-In the [Hal Tutorial](https://linuxcnc.org/docs/stable/html/hal/tutorial.html) we learned about the realtime component [`siggen`](https://linuxcnc.org/docs/html/man/man9/siggen.9.html). 
+And run it all with a single command
+
+```bash
+paul@Precix:~/basics$ halrun -I -f el2008.hal 
+Note: Using POSIX realtime
+halcmd: 
+```
+
+# END
+
+That's it, that's all I've got for this demo.
