@@ -7,6 +7,12 @@ Alright, so you've read a little bit about how HAL works, but you're trying to f
 * [LinuxCNC Ethercat Setup](#linuxcnc-ethercat-setup)
 * [Basic Digital Outputs](#basic-digital-outputs2)
 
+## Goal
+
+Construct a basic "hello world" blinking light with a Beckhoff EL2008 and LinuxCNC.
+
+# TODO: Include gif of the blinking LED
+
 ## Required Reading
 
 I'm not your real dad, I have no authority over you. But if you're starting out your journey into LinuxCNC it would do you well to grok the resources I've linked above and especially below. Some of these felt buried and hard to discover, so I'm doing my best to bring them to light.
@@ -160,16 +166,54 @@ Here we tell `linuxcnc-ethercat` that we have two slaves. For each one we set th
 
 ### HAL Setup
 
-Let's build up the `.hal` file one line at a time
+Next let's work on building up the `.hal` file one line at a time. Let's use `halrun` to enter the commands as we go. 
 
-Let's start by loading the EtherCAT config file we just wrote
-```hal
-loadusr -W lcec_conf ethercat-config.xml
+Let's begin by starting `halrun`:
+```bash
+paul@Precix:~/basics$ halrun
+halcmd:
 ```
+
+This starts `halrun` and lets us test commands on the fly.
+
+Next let's load the EtherCAT config file we just wrote
+
+```bash
+halcmd: loadusr -W lcec_conf ethercat-config.xml
+halcmd: 
+```
+
 [loadusr](https://www.linuxcnc.org/docs/html/hal/basic-hal.html#sub:hal-loadusr) line tells `halrun` to load the configuration file with `lcec_conf` so that `linuxcnc-ethercat` can know which modules we have.
 
+Next let's load the `linuxcnc-ethercat` realtime component
+
 ```hal
-loadrt lcec
+halcmd: loadrt lcec
+Note: Using POSIX realtime
+halcmd: 
+```
+
+This loads the `linuxcnc-ethercat` realtime compoment and all the black magic therein.
+
+We have a couple more steps we need to take before we can make any LEDs turn on. The first is creating a HAL [thread](https://linuxcnc.org/docs/2.4/html/man/man9/threads.9.html) that will trigger `lcec` to read from and write to the hardware. In this example we'll use a single thread, but most projects will be more selective about threading.
+
+```hal
+loadrt threads name1=lcec-thread period1=1000000
+```
+
+Notice two things here:
+* We named the thread `lcec-thread`, we'll use this to attach components to it later
+* We set our period to `1000000`. For the thread that `lcec` uses, this value needs to match the `appTimePeriod` value we defined above in `ethercat-config.xml`
+
+Now that we have a thread we can use it to trigger the functions `lcec.read-all` and `lcec.write-all` every millisecond
+
+```hal
+addf lcec.read-all lcec-thread
+addf lcec.write-all lcec-thread
+```
+
+```hal
+setp lcec.0.1.dout-0 1
 ```
 
 # TODO CONTINUE HERE
@@ -179,17 +223,17 @@ loadrt lcec
 loadusr -W lcec_conf ethercat-config.xml
 loadrt lcec
 
+loadrt threads name1=lcec-thread period1=1000000
+
+addf lcec.read-all lcec-thread
+addf lcec.write-all lcec-thread
+
 loadrt siggen
 
-loadrt threads name1=ec-thread period1=1000000 name2=test-thread period2=1000000
-
-addf siggen.0.update test-thread
+addf siggen.0.update lcec-thread
 
 net channel-1-led => lcec.0.1.dout-0
 net channel-1-led <= siggen.0.clock
-
-addf lcec.read-all ec-thread
-addf lcec.write-all ec-thread
 
 start
 ```
