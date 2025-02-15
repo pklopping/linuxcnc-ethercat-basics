@@ -1,0 +1,16 @@
+loadusr -W lcec_conf ethercat-config.xml
+loadrt lcec
+
+loadrt siggen
+
+loadrt threads name1=ec-thread period1=1000000 name2=test-thread period2=1000000
+
+addf siggen.0.update test-thread
+
+net channel-1-led => lcec.0.1.dout-0
+net channel-1-led <= siggen.0.clock
+
+addf lcec.read-all ec-thread
+addf lcec.write-all ec-thread
+
+start

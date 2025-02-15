@@ -100,7 +100,7 @@ Let's create an XML config file so we can tell `linuxcnc-ethercat` what we have 
 
 ### Coding Setup
 
-Let's organize our code because we aren't troglodytes. In this example code we'll put all of our code into a folder named `basics` in our home folder.
+Let's organize our code because we aren't troglodytes. In this example code we'll put all of our code into a folder named `basics` in our home folder. If you clone this repo you can find the example code in a matching [basics](./basics/) folder. 
 
 ```bash
 paul@Precix:~$ cd ~
@@ -141,7 +141,8 @@ This block tells `linuxcnc-ethercat` that we're about to describe all of the mas
 Here we tell `linuxcnc-ethercat` that we have one master, and then we use a couple XML attributes to configure it:
 * we set `idx` to `0` so that it lines up with what we saw in the output of `ethercat slaves`
 * we configure `appTimePeriod` to be `1000000`, a.k.a. 1,000,000 nanoseconds, a.k.a. 1 millisecond. `appTimePeriod` effectively configures how many times per second the outputs can be updated. This is a fairly arbitrary value for now, but for this project (and most motion projects) 1,000 updates per second is plenty sufficient.
-* we configure `refClockSyncCycles` to be `1000`. This tells `linuxcnc-ethercat` how frequently to update the distributed clocks across the EtherCAT slaves. Most examples I have come across set it to `1000`.
+  * This value needs to match what we configure in our `.hal` file later.
+* we configure `refClockSyncCycles` to be `1000`. This tells `linuxcnc-ethercat` how frequently to update the distributed clocks across the EtherCAT slaves. Most examples I have come across set it to `1000`. 
 
 Next we can start configuring our modules. The `linuxcnc-ethercat` developers provide a list of [supported modules](https://linuxcnc-ethercat.github.io/linuxcnc-ethercat/DEVICES.html) and would-ya-look-at-that the EK1100 and EL2008 have support out of the box. What this means is that we don't need to leverage the `generic` congfiguration and instead can just tell `linuxcnc-ethercat` which devices we're using. 
 
@@ -157,9 +158,40 @@ Next we can start configuring our modules. The `linuxcnc-ethercat` developers pr
 
 Here we tell `linuxcnc-ethercat` that we have two slaves. For each one we set the `idx` and `type` attributes to match what we received from the `ethercat slaves` command.
 
-
 ### HAL Setup
 
+Let's build up the `.hal` file one line at a time
 
+Let's start by loading the EtherCAT config file we just wrote
+```hal
+loadusr -W lcec_conf ethercat-config.xml
+```
+[loadusr](https://www.linuxcnc.org/docs/html/hal/basic-hal.html#sub:hal-loadusr) line tells `halrun` to load the configuration file with `lcec_conf` so that `linuxcnc-ethercat` can know which modules we have.
+
+```hal
+loadrt lcec
+```
+
+# TODO CONTINUE HERE
+
+`el2008.hal`
+```hal
+loadusr -W lcec_conf ethercat-config.xml
+loadrt lcec
+
+loadrt siggen
+
+loadrt threads name1=ec-thread period1=1000000 name2=test-thread period2=1000000
+
+addf siggen.0.update test-thread
+
+net channel-1-led => lcec.0.1.dout-0
+net channel-1-led <= siggen.0.clock
+
+addf lcec.read-all ec-thread
+addf lcec.write-all ec-thread
+
+start
+```
 
 In the [Hal Tutorial](https://linuxcnc.org/docs/stable/html/hal/tutorial.html) we learned about the realtime component [`siggen`](https://linuxcnc.org/docs/html/man/man9/siggen.9.html). 
