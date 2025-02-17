@@ -2,6 +2,12 @@
 
 Alright, so you've read a little bit about how HAL works, but you're trying to figure out the next steps to actually make an LED blink. This example should give you enough tools to create a blinking LED version of a "hello world" program.
 
+## Hardware Overview
+* [EK1100 | EtherCAT Coupler](https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/ek1xxx-bk1xx0-ethercat-coupler/ek1100.html)
+    * The EK1100 copules an ethernet connection with the EtherCAT devices
+* [EL2008 | EtherCAT Terminal, 8-channel digital output, 24 V DC, 0.5 A](https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/el2xxx-digital-output/el2008.html)
+  * Though this tutorial should be compatible with [any supported Beckhoff EtherCAT digital output module](https://github.com/linuxcnc-ethercat/linuxcnc-ethercat/blob/master/documentation/DEVICES.md)
+
 ## Overview
 * [Required Reading](#required-reading)
 * [LinuxCNC Ethercat Setup](#linuxcnc-ethercat-setup)
@@ -15,7 +21,7 @@ Construct a basic "hello world" blinking light with a Beckhoff EL2008 and LinuxC
 
 ## Required Reading
 
-I'm not your real dad, I have no authority over you. But if you're starting out your journey into LinuxCNC it would do you well to grok the resources I've linked above and especially below. Some of these felt buried and hard to discover, so I'm doing my best to bring them to light.
+I'm not your real dad, I have no authority over you. But if you're starting out your journey into LinuxCNC it would do you well to grok the resources in the [main readme](../readme.md) and especially below. Some of these felt buried and hard to discover, so I'm doing my best to bring them to light.
 
 ### [EtherCAT installation from repositories - how to step by step](https://forum.linuxcnc.org/ethercat/45336-ethercat-installation-from-repositories-how-to-step-by-step)
 

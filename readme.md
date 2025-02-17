@@ -1,8 +1,10 @@
-# Au70's LinuxCNC EtherCAT Introduction
+# LinuxCNC EtherCAT Introduction
+
+_This repo and its author(s?) aren't affiliated with LinuxCNC._
 
 ## Why am I qualified to make this document?
 
-I'm not. I started this document one week after I spun up my first LinuxCNC computer and started learning it. But I struggled a lot and I'm hoping I can consolidate a handful of resources to make it easier for others to learn. 
+I'm not. I started this document one week after I spun up my first LinuxCNC computer and started learning it. But I struggled a lot and I'm hoping I can consolidate a handful of resources to make it easier for others to learn.
 
 ## Overview
 
