@@ -66,3 +66,21 @@ The second being that we're utilizing the `modParam` elements of the slaves. You
 ### `el7041.hal` and `mill.ini`
 
 These two files are deeply intertwined and I won't pretend to know everything about them. I will do my best to comment them with links to documentation so that as you go through them you can easily look up what is doing what. I've stripped the `.ini` file down to what I believe is the minimum required for the example; there are MANY more [configuration settings available](https://linuxcnc.org/docs/html/config/ini-config.html) and it would do you well to learn about them.
+
+### Run it
+
+From the command line, navigate to the directory where you have these three files `el7041-conf.xml`, `el7041.hal`, `mill.ini` and run the following command
+```bash
+paul@Precix:~/dev/el7041-example$ linuxcnc mill.ini
+```
+And you should see the LinuxCNC UI appear.
+
+By default it loads a 3-axis g-code example, which is why it gets mad about the use of the `z` axis.
+
+![error message about bad character 'z'](./img/angry.png)
+
+But once you click "OK" you should see the UI pop up
+
+![linuxcnc UI with a single axis](./img/linuxcnc-ui.png)
+
+Now, if you're using the AS2022 like I am, you should be able to drive the axis back and forth without too much hassle. You may get some following errors, and if you do you'll want to tune the velocity, acceleration, and PID settings. 
