@@ -1,0 +1,13 @@
+<masters>
+  <master idx="0" appTimePeriod="100000" refClockSyncCycles="5">
+    <slave idx="0" type="EK1100" />
+    <slave idx="1" type="EL7041-1000" name="x-axis">
+    <!-- Note, if you don't set this, it will remember whatever setting was used last -->
+		<modParam name="maxCurrent" value="4" />
+		<modParam name="nominalVoltage" value="24.0" />
+    <!-- The "encoder" parameter enables or disables the virtual encoder. Set to false if you're using a hardware encoder -->
+		<modParam name="encoder" value="false" /> 
+		<!-- <modParam name="microsteps" value="1" /> -->
+	</slave>
+  </master>
+</masters>

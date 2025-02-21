@@ -1,9 +1,0 @@
-<masters>
-  <master idx="0" appTimePeriod="100000" refClockSyncCycles="5">
-    <slave idx="0" type="EK1100" />
-    <slave idx="1" type="EL7041-1000" name="x-axis">
-		<modParam name="maxCurrent" value="2" />
-		<modParam name="nominalVoltage" value="24.0" />
-	</slave>
-  </master>
-</masters>
