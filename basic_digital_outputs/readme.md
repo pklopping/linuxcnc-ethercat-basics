@@ -2,16 +2,17 @@
 
 Alright, so you've read a little bit about how HAL works, but you're trying to figure out the next steps to actually make an LED blink. This example should give you enough tools to create a blinking LED version of a "hello world" program.
 
+## Overview
+* [Hardware Overview](#hardware-overview)
+* [Required Reading](#required-reading)
+* [LinuxCNC Ethercat Setup](#linuxcnc-ethercat-setup)
+* [Basic Digital Outputs](#basic-digital-outputs)
+
 ## Hardware Overview
 * [EK1100 | EtherCAT Coupler](https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/ek1xxx-bk1xx0-ethercat-coupler/ek1100.html)
     * The EK1100 copules an ethernet connection with the EtherCAT devices
 * [EL2008 | EtherCAT Terminal, 8-channel digital output, 24 V DC, 0.5 A](https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/el2xxx-digital-output/el2008.html)
   * Though this tutorial should be compatible with [any supported Beckhoff EtherCAT digital output module](https://github.com/linuxcnc-ethercat/linuxcnc-ethercat/blob/master/documentation/DEVICES.md)
-
-## Overview
-* [Required Reading](#required-reading)
-* [LinuxCNC Ethercat Setup](#linuxcnc-ethercat-setup)
-* [Basic Digital Outputs](#basic-digital-outputs)
 
 ## Goal
 

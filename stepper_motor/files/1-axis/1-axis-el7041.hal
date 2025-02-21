@@ -1,0 +1,71 @@
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# Load the real-time kinematics component specified in the .ini file
+loadrt [KINS]KINEMATICS
+
+# Load the Enhanced Motion Control real-time component as specified in the .ini file
+loadrt [EMCMOT]EMCMOT servo_period_nsec=[EMCMOT]SERVO_PERIOD num_joints=[KINS]JOINTS
+
+# Load the LinuxCNC-EtherCAT configuration as specified in the .ini file
+loadusr -W lcec_conf [LCEC]CONFIG
+
+# Load LinuxCNC-Ethercat
+loadrt lcec
+
+# Load a PID real-time component named "x-pid"
+loadrt pid names=x-pid
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Threads
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+addf lcec.read-all servo-thread
+addf motion-command-handler servo-thread
+addf motion-controller servo-thread
+addf x-pid.do-pid-calcs servo-thread
+addf lcec.write-all servo-thread
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# X-Axis 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+# X axis PID controller setup with settings from .ini file
+setp x-pid.Pgain [JOINT_0]P
+setp x-pid.Igain [JOINT_0]I
+setp x-pid.Dgain [JOINT_0]D
+setp x-pid.FF0 [JOINT_0]FF0
+setp x-pid.FF1 [JOINT_0]FF1
+setp x-pid.FF2 [JOINT_0]FF2
+setp x-pid.deadband [JOINT_0]DEADBAND
+setp x-pid.maxoutput [JOINT_0]MAX_OUTPUT
+
+# X-Axis PID nets
+net x-enable => x-pid.enable
+net x-pos-cmd => x-pid.command
+net x-pos-fb => x-pid.feedback
+net x-pos-fb => joint.0.motor-pos-fb
+net x-vel-cmd <= x-pid.output
+
+# X axis interface
+net x-neg-lim-in => joint.0.home-sw-in
+net x-enable <= joint.0.amp-enable-out
+net x-amp-fault => joint.0.amp-fault-in
+net x-pos-cmd <= joint.0.motor-pos-cmd
+net x-homed <= joint.0.homed
+net x-homing <= joint.0.homing
+net x-neg-lim-in => joint.0.neg-lim-sw-in
+net x-pos-lim-in => joint.0.pos-lim-sw-in
+
+# X axis hardware connections
+setp lcec.0.x-axis.srv-scale [JOINT_0]SCALE
+setp lcec.0.x-axis.enc-pos-scale [JOINT_0]ENC_SCALE
+net x-enable => lcec.0.x-axis.srv-enable
+net x-amp-fault <= lcec.0.x-axis.srv-error
+net x-vel-cmd => lcec.0.x-axis.srv-cmd
+net x-pos-fb <= lcec.0.x-axis.enc-pos
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# E-Stop
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+# Estop simulation connections
+net estop   iocontrol.0.emc-enable-in   iocontrol.0.user-enable-out
