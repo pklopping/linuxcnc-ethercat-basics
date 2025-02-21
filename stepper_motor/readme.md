@@ -11,6 +11,7 @@ Hopefully this tutorial will help you get set up using a Beckhoff EL7041 stepper
 * [Required Reading](#required-reading)
 * [Stepper Motor Example](#stepper-motor-example)
 * [Dual Stepper Motor Example](#dual-stepper-motor-example)
+* [Triple Stepper Motor Example](#triple-stepper-motor-example)
 
 ## Hardware Overview
 * [EK1100 | EtherCAT Coupler](https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/ek1xxx-bk1xx0-ethercat-coupler/ek1100.html)
