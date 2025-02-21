@@ -14,7 +14,7 @@
 		<modParam name="encoder" value="false" />
 	</slave>
     <slave idx="3" type="EL7041-1000" name="z-axis">
-		<modParam name="maxCurrent" value="2" />
+		<modParam name="maxCurrent" value="0.83" />
 		<modParam name="nominalVoltage" value="24.0" />
 		<!-- <modParam name="microsteps" value="1" /> -->
 		<modParam name="encoder" value="false" />
